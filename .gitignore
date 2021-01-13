@@ -1,3 +1,5 @@
 .envrc
+.DS_Store
 app.yaml
 Vaccine Emails-6856494a9052.json
+__pycache__
