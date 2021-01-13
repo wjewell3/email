@@ -4,5 +4,7 @@ google-api-python-client
 google-cloud-datastore
 google-cloud-storage
 grpcio-gcp
+mailjet_rest
 PyYAML
 schedule
+sendgrid

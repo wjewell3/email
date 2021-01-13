@@ -26,7 +26,10 @@ class Config:
     user2 = env('GMAIL2_USER')
     pw2 = env('GMAIL2_PW')
     name2 = env('GMAIL2_NAME')
-    ph2 = env('GMAIL2_PH') 
+    ph2 = env('GMAIL2_PH')
+    SENDGRID_API_KEY = env('SENDGRID_API_KEY')
+    MAILJET_KEY = env('MAILJET_KEY')
+    MAILJET_SECRET = env('MAILJET_SECRET')
 
     refresh = {'frequency': 1400} # minutes -> 1 day
     @staticmethod
@@ -34,7 +37,7 @@ class Config:
         pass
 
 class DevConfig(Config):
-    to_addr = 'jewell.will@gmail.com'
+    to_addr = env('GMAIL1_USER')
 
 class ProdConfig(Config):
     to_addr = 'COVID19VaccineStandby@Nashville.gov'
