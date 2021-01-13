@@ -1,5 +1,5 @@
 # Configuration of this API
-from google.cloud import ndb
+# from google.cloud import ndb
 from google.cloud import datastore
 import os
 import re

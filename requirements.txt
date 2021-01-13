@@ -2,11 +2,8 @@ Flask==1.0.2
 flask_cors
 google-api-python-client
 google-cloud-datastore
-google-cloud-ndb
 google-cloud-storage
 grpcio-gcp
-# requests
 mod_wsgi
 PyYAML
 schedule
-# gunicorn==19.7.1
