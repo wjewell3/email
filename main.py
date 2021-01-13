@@ -14,7 +14,7 @@ startupTs = datetime.now()
 global env_
 env_ = env('_ENV')
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 def send_emails():
     today = date.today()
@@ -132,9 +132,10 @@ schedule.every(config[env_].refresh["frequency"]).minutes.do(send_emails)
 # runs at startup
 print(f'starting service at {startupTs} in Env: {env_}')
 send_emails()
+background_thread()
 
 if __name__ == '__main__':
      try: 
-         background_thread()
+         application.run()
      except Exception as e:
          print('main() error: ', e)
