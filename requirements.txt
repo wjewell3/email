@@ -1,3 +1,4 @@
+pip==20.3.3
 Flask==1.0.2
 flask_cors
 google-api-python-client
