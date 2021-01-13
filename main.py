@@ -7,13 +7,16 @@ import threading
 import time
 
 from config import *
+from flask import Flask
 
 startupTs = datetime.now()
 
 global env_
 env_ = env('_ENV')
 
-def main():
+app = Flask(__name__)
+
+def send_emails():
     today = date.today()
     # Textual month, day and year	
     today_ = today.strftime("%B %d, %Y")
@@ -122,13 +125,13 @@ def schedules():
 
 
 # continues to run on schedule frequency below
-schedule.every(config[env_].refresh["frequency"]).minutes.do(main)
+schedule.every(config[env_].refresh["frequency"]).minutes.do(send_emails)
 
 # End of scheduling part
 
 # runs at startup
-print(f'starting service at {startupTs} in env:{env_}')
-main()
+print(f'starting service at {startupTs} in Env: {env_}')
+send_emails()
 
 if __name__ == '__main__':
      try: 
