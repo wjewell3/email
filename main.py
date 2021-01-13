@@ -1,13 +1,13 @@
 from datetime import datetime, date
 from email.mime.text import MIMEText
+from flask import Flask
 import os
 import schedule
 import smtplib
-import threading
+# import threading
 import time
 
 from config import *
-from flask import Flask
 
 startupTs = datetime.now()
 
@@ -112,30 +112,30 @@ def send_emails():
         
 # Scheduling Part of Script 
 
-def background_thread():
-    schedule_thread = threading.Thread(
-        target=schedules)
-    schedule_thread.start()
-    return '{}'
-
-def schedules():
-    while True:
-        schedule.run_pending()
-        time.sleep(3600) # checks if any pending jobs every 3600 seconds -> 1 hour
-
+# def background_thread():
+#     schedule_thread = threading.Thread(
+#         target=schedules)
+#     schedule_thread.start()
+#     return '{}'
 
 # continues to run on schedule frequency below
 schedule.every(config[env_].refresh["frequency"]).minutes.do(send_emails)
 
+# runs at startup
+print(f'Starting service at {startupTs} in Env: {env_}')
+send_emails()
+
+# def schedules():
+while True:
+    schedule.run_pending()
+    time.sleep(3600) # checks if any pending jobs every 3600 seconds -> 1 hour
+
 # End of scheduling part
 
-# runs at startup
-print(f'starting service at {startupTs} in Env: {env_}')
-send_emails()
-background_thread()
+# background_thread()
 
 if __name__ == '__main__':
      try: 
          application.run()
      except Exception as e:
-         print('main() error: ', e)
+         print('app kickoff error: ', e)
