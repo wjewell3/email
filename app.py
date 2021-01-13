@@ -41,13 +41,13 @@ def main():
     Reaching out to be added to the Metro Nashville Public Health Department COVID-19 Vaccine standby list.
 
     Contact Info:
-    Name: {name1}
-    Ph: {ph1}
+    Name: {name}
+    Ph: {ph}
 
     Thank you!
-    -{name1.split(' ')[0]}
+    -{name.split(' ')[0]}
     ''')
-    message['subject'] = f'MNPD COVID-19 Vaccine Standby List: {name1}, {today_}'
+    message['subject'] = f'MNPD COVID-19 Vaccine Standby List: {name}, {today_}'
     message['from'] = from_addr
     message['to'] = ', '.join([to_addrs])
 
@@ -58,7 +58,7 @@ def main():
     server.login(username, password)
     try:
         server.sendmail(from_addr, to_addrs, message.as_string())
-        print(f'Successfully sent email from Will at {datetime.now()}')
+        print(f'''Successfully sent email from {name.split(' ')[0]} at {datetime.now()}''')
     except Exception as e:
         print(e)
 
@@ -67,6 +67,8 @@ def main():
     # use username or email to log in
     username = config[env_].user2
     password = config[env_].pw2
+    name = config[env_].name2
+    ph = config[env_].ph2
 
     from_addr = config[env_].user2
     to_addrs = config[env_].to_addr
@@ -82,13 +84,13 @@ def main():
     Reaching out to be entered into the Metro Nashville Public Health Department COVID-19 Vaccine Standby List!
 
     Contact Info:
-    Name: {name2}
-    Phone: {ph2}
+    Name: {name}
+    Phone: {ph}
 
     Thank you,
-    -{name2.split(' ')[0]}
+    -{name.split(' ')[0]}
     ''')
-    message['subject'] = f'MNPD COVID-19 Vaccine Standby List: {name2}, {today_}'
+    message['subject'] = f'MNPD COVID-19 Vaccine Standby List: {name}, {today_}'
     message['from'] = from_addr
     message['to'] = ', '.join([to_addrs])
 
@@ -99,7 +101,7 @@ def main():
     server.login(username, password)
     try:
         server.sendmail(from_addr, to_addrs, message.as_string())
-        print(f'Successfully sent email from Emily at {datetime.now()}')
+        print(f'''Successfully sent email from {name.split(' ')[0]} at {datetime.now()}''')
     except Exception as e:
         print(e)
     server.quit()
