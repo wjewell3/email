@@ -1,1 +1,6 @@
+google-api-python-client
+google-cloud-datastore
+google-cloud-ndb
+google-cloud-storage
+grpcio-gcp
 schedule

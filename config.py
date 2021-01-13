@@ -1,65 +1,41 @@
 # Configuration of this API
-
+from google.cloud import ndb
+from google.cloud import datastore
 import os
 
 def env(var):
-    return os.environ[var]
+    client = datastore.Client()
+    q = client.query(kind='Gmail')
+    q.add_filter('name','=',var)
+    q_str = str(list(q.fetch())[0])
+    startPos = q_str.find(''''value':''') + 10
+    endPos = q_str[startPos:].find("'")
+    return q_str[startPos:startPos+endPos]
+
+# def env(var):
+#     return os.environ[var]
 
 class Config:
+    # Currently set up to send from 2 users - feel free to change this
     user1 = env('GMAIL1_USER')
     pw1 = env('GMAIL1_PW')
+    name1 = env('GMAIL1_NAME')
+    ph1 = env('GMAIL1_PH')
     user2 = env('GMAIL2_USER')
     pw2 = env('GMAIL2_PW')
+    name2 = env('GMAIL2_NAME')
+    ph2 = env('GMAIL2_PH') 
 
-    refresh = {'frequency': 1} # minutes
+    refresh = {'frequency': 1400} # minutes -> 1 day
     @staticmethod
     def init_app(app):
         pass
 
 class DevConfig(Config):
-    # """Development configuration
-    # :param Config: Base class with configurations common to all environments.
-    # :type Config: Config
-    # """
-    # # environment specific settings go here.
-
     to_addr = 'jewell.will@gmail.com'
-    # api = {
-    #     'nate_config_url': f"https{env('NATE_CONFIG_ROOT')}{env('NATE_DEV_SUFFIX_OLD')}/api/config/facility"
-    #     ,'nate_config_api_key': env('NATE_CONFIG_KEY')
-    #     }
-    # kafka = {
-    #     'offset': 'earliest'
-    #     ,'service_name': f"rafael_nadal_{env('_ENV')}_{env('KAFKA_SERVICE_NAME')}"
-    #     }
-    # write_to_db = {
-    #     'db': env('PG_FLOWDEV_DB')
-    #     ,'user': env('PG_FLOWDEV_USER')
-    #     ,'pw': env('PG_FLOWDEV_PW')
-    #     ,'host': env('PG_FLOWDEV_HOST')
-    #     }
 
 class ProdConfig(Config):
-    # """Production configuration
-    # param Config: Base class with configurations common to all environments.
-    # :type Config: Config
-    # """
-
-    to_addr = 'jewell.will@gmail.com'
-    # api = {
-    #     'nate_config_url': f"https{env('NATE_CONFIG_ROOT')}{env('NATE_PROD_SUFFIX_NEW')}/api/config/facility"
-    #     ,'nate_config_api_key': env('NATE_CONFIG_KEY')
-    #     }
-    # kafka = {
-    #     'offset': 'earliest'
-    #     ,'service_name': f"rafael_nadal_{env('_ENV')}_{env('KAFKA_SERVICE_NAME')}"
-    #     }
-    # write_to_db = {
-    #     'db': env('PG_PROD_DB')
-    #     ,'user': env('PG_PROD_USER')
-    #     ,'pw': env('PG_PROD_PW')
-    #     ,'host': env('PG_PROD_HOST')
-    #     }
+    to_addr = 'COVID19VaccineStandby@Nashville.gov'
 
 config = {
     'dev': DevConfig,

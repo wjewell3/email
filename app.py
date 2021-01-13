@@ -24,6 +24,8 @@ def main():
     # use username or email to log in
     username = config[env_].user1
     password = config[env_].pw1
+    name = config[env_].name1
+    ph = config[env_].ph1
 
     from_addr = config[env_].user1
     to_addrs = config[env_].to_addr
@@ -33,19 +35,19 @@ def main():
     # on our case we will use MIMEText
     # to send only text
     
-    message = MIMEText('''
+    message = MIMEText(f'''
     Hi, 
 
     Reaching out to be added to the Metro Nashville Public Health Department COVID-19 Vaccine standby list.
 
     Contact Info:
-    Name: Will Jewell
-    Ph: 615-294-7768 
+    Name: {name1}
+    Ph: {ph1}
 
     Thank you!
-    -Will
+    -{name1.split(' ')[0]}
     ''')
-    message['subject'] = f'MNPD COVID-19 Vaccine Standby List: Will Jewell, {today_}'
+    message['subject'] = f'MNPD COVID-19 Vaccine Standby List: {name1}, {today_}'
     message['from'] = from_addr
     message['to'] = ', '.join([to_addrs])
 
@@ -74,19 +76,19 @@ def main():
     # on our case we will use MIMEText
     # to send only text
 
-    message = MIMEText('''
+    message = MIMEText(f'''
     Hello, 
 
     Reaching out to be entered into the Metro Nashville Public Health Department COVID-19 Vaccine Standby List!
 
     Contact Info:
-    Name: Emily Collins
-    Phone: 615-481-0798
+    Name: {name2}
+    Phone: {ph2}
 
     Thank you,
-    Emily
+    -{name2.split(' ')[0]}
     ''')
-    message['subject'] = f'MNPD COVID-19 Vaccine Standby List: Emily Collins, {today_}'
+    message['subject'] = f'MNPD COVID-19 Vaccine Standby List: {name2}, {today_}'
     message['from'] = from_addr
     message['to'] = ', '.join([to_addrs])
 
@@ -114,7 +116,7 @@ def background_thread():
 def schedules():
     while True:
         schedule.run_pending()
-        time.sleep(5) # runs every 3600 seconds -> 1 hour
+        time.sleep(3600) # checks if any pending jobs every 3600 seconds -> 1 hour
 
 
 # continues to run on schedule frequency below
