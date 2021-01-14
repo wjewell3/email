@@ -1,14 +1,14 @@
 from datetime import datetime, date
-from email.mime.text import MIMEText
+# from email.mime.text import MIMEText
 from flask import Flask
 import os
 import schedule
-import smtplib
+# import smtplib
 import time
 # import threading
 from mailjet_rest import Client
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+# from sendgrid import SendGridAPIClient
+# from sendgrid.helpers.mail import Mail
 
 from config import *
 
