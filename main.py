@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from flask import Flask
 import os
 import schedule
-
+import smtplib
 import time
 # import threading
 from mailjet_rest import Client
@@ -19,51 +19,51 @@ env_ = env('_ENV')
 # env_ = 'prod'
 app = Flask(__name__)
 
+# This works on google app engine but appends a different email suffix that makes it look like spam
+def mailjet():
+    today = date.today()
+    # Textual month, day and year	
+    today_ = today.strftime("%B %d, %Y")
+    api_key = config[env_].MAILJET_KEY
+    api_secret = config[env_].MAILJET_SECRET
+    mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+    data = {
+    'Messages': [
+        {
+        "From": {
+            "Email": f"{config[env_].user1}",
+            "Name": f"{config[env_].name1.split(' ')[0]}"
+        },
+        "To": [
+            {
+            "Email": f"{config[env_].user1}",
+            "Name": f"{config[env_].name1.split(' ')[0]}"
+            }
+        ],
+        "Subject": f'MNPD COVID-19 Vaccine Standby List: {config[env_].name1}, {today_}',
+        "TextPart": "My first Mailjet email",
+        "HTMLPart": f'''
+Hello, 
 
-# def mailjet():
-#     today = date.today()
-#     # Textual month, day and year	
-#     today_ = today.strftime("%B %d, %Y")
-#     api_key = config[env_].MAILJET_KEY
-#     api_secret = config[env_].MAILJET_SECRET
-#     mailjet = Client(auth=(api_key, api_secret), version='v3.1')
-#     data = {
-#     'Messages': [
-#         {
-#         "From": {
-#             "Email": f"{config[env_].user1}",
-#             "Name": f"{config[env_].name1.split(' ')[0]}"
-#         },
-#         "To": [
-#             {
-#             "Email": f"{config[env_].user1}",
-#             "Name": f"{config[env_].name1.split(' ')[0]}"
-#             }
-#         ],
-#         "Subject": f'MNPD COVID-19 Vaccine Standby List: {config[env_].name1}, {today_}',
-#         "TextPart": "My first Mailjet email",
-#         "HTMLPart": f'''
-# Hello, 
+Reaching out to be entered into the Metro Nashville Public Health Department COVID-19 Vaccine Standby List!
 
-# Reaching out to be entered into the Metro Nashville Public Health Department COVID-19 Vaccine Standby List!
+Contact Info:
+Name: {config[env_].name1}
+Phone: {config[env_].ph1}
 
-# Contact Info:
-# Name: {config[env_].name1}
-# Phone: {config[env_].ph1}
+Thank you,
+-{config[env_].name1.split(' ')[0]}
+''',
+        "CustomID": ""
+        }
+    ]
+    }
+    result = mailjet.send.create(data=data)
+    print(result.status_code)
+    print(result.json())
+    return
 
-# Thank you,
-# -{config[env_].name1.split(' ')[0]}
-# ''',
-#         "CustomID": ""
-#         }
-#     ]
-#     }
-#     result = mailjet.send.create(data=data)
-#     print(result.status_code)
-#     print(result.json())
-#     return
-
-import smtplib
+# this does not seem to work on google app engine, but does work locally and does not look like spam. will get this going in cron
 def send_emails():
     today = date.today()
     # Textual month, day and year	
@@ -158,6 +158,7 @@ def send_emails():
     server.quit()
     return
         
+# sendgrid's setup was a pain so i abandoned this
 # def sendgrid():
 #     message = Mail(
 #         from_email=config[env_].user1,
@@ -180,10 +181,6 @@ def send_emails():
 #         target=schedules)
 #     schedule_thread.start()
 #     return '{}'
-
-# continues to run on schedule frequency below
-
-# runs at startup
 
 def schedules():
     print(f'Starting service at {startupTs} in Env: {env_}')
